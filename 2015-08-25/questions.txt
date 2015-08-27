@@ -18,6 +18,32 @@ In practice, this took X time.  This includes
 Consider the following questions:
 
 1. What is a simple model that would predict this time?
+ 
+ - Time to start the process : alpha
+ - Time to compute row counts for all m rows in parallel : n (where n is the largest row count )
+ - Time for Instructor to perform addition: c1
+ - Time for the instructor to gather counts and do arithmetic : c1 * m ( where m is the number of rows )
+ 
+ - Total time to complete the parallel protocol = alpha + n + c1 * m = O( m + n )
+ 
 2. What about a simple model to predict time for one person to count?
+ - Time to start the process : alpha
+ - Time taken to count one person : c2
+ - Time to count all people : c2 * t ( where t is the total number of people, t <= m * n, since all m rows need not have n people, i.e. t = O(m * n) )
+ 
+ - Total time to complete the serial protocol = alpha + c2 * t = O( m * n )
+
 3. How big should the class be before the parallel method takes less time?
 
+For parallel method to take less time:
+alpha + n + c1 * m < alpha + c2 * t
+
+Points to Consider:
+
+1. Load Balancing: If people are not equally spread out across rows, the parallel part of the protocol will not be fully utilized and some row counting people ( threads ) will be finished counting earlier than the others.
+
+2. The comparision between amount of serial overhead required to gather and add the counts produced by each row counter as opposed to simplicity of just counting all people one by one.
+
+Hence, assuming equal load balancing of people accross rows, for the parallel protocol to take less time:
+alpha + n + c1 * m < alpha + c2 * m * n
+i.e. n + c1 * m < c2 * m * n
