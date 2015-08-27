@@ -39,10 +39,8 @@ For parallel method to take less time:
 alpha + n + c1 * m < alpha + c2 * t
 
 Points to Consider:
-
-1. Load Balancing: If people are not equally spread out across rows, the parallel part of the protocol will not be fully utilized and some row counting people ( threads ) will be finished counting earlier than the others.
-
-2. The comparision between amount of serial overhead required to gather and add the counts produced by each row counter as opposed to simplicity of just counting all people one by one.
+ i. Load Balancing: If people are not equally spread out across rows, the parallel part of the protocol will not be fully utilized and some row counting people ( threads ) will be finished counting earlier than the others.
+ ii. The comparision between amount of serial overhead required to gather and add the counts produced by each row counter as opposed to simplicity of just counting all people one by one.
 
 Hence, assuming equal load balancing of people accross rows, for the parallel protocol to take less time:
 alpha + n + c1 * m < alpha + c2 * m * n
