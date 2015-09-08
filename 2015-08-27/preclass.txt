@@ -8,6 +8,8 @@
     you should use a script to produce this plot, with both the serial
     fraction and the maximum number of cores as parameters.
 
+    The plot shows that with increase in the number of cores, the parallel efficiency initially increases steeply unto a certain threshold, and subsequently the rising curve flattens, and a further increase in cores do not affect the efficiency.
+
 2.  Suppose a particular program can be partitioned into perfectly
     independent tasks, each of which takes time tau.  Tasks are
     set up, scheduled, and communicated to p workers at a (serial)
@@ -16,6 +18,8 @@
 
 3.  Under what circumstances is it best to not tune?
 
+    - When the time investment in tuning is not commensurate with the speed up achieved after tuning, viz. spending time optimizing a code section which is not very parallel friendly.
+
 4.  The class cluster consists of eight nodes and fifteen Xeon Phi
     accelerator boards.  Based on an online search for information on
     these systems, what do you think is the theoretical peak flop rate
@@ -23,5 +27,9 @@
     you computed this, and give URLs for where you got the parameters
     in your calculation.  (We will return to this question again after
     we cover some computer architecture.)
+
+    - 8 DP SIMD Lane * 2 FMA * 1.053 GHz * 60 cores * 15 Xeon Phi accelerator boards = 15.1 TFLOP/sec
     
 5.  What is the approximate theoretical peak flop rate for your own machine?
+
+    - 8 DP SIMD Lane * 2 FMA * 3.1 GHz * 2 cores = 99.2 GFLOP/sec
