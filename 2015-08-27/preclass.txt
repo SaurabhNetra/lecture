@@ -8,7 +8,7 @@
     you should use a script to produce this plot, with both the serial
     fraction and the maximum number of cores as parameters.
 
-    The plot shows that with increase in the number of cores, the parallel efficiency initially increases steeply unto a certain threshold, and subsequently the rising curve flattens, and a further increase in cores do not affect the efficiency.
+    - The plot shows that with increase in the number of cores, the parallel efficiency initially increases steeply unto a certain threshold, and subsequently the rising curve flattens, and a further increase in cores do not affect the efficiency.
 
 2.  Suppose a particular program can be partitioned into perfectly
     independent tasks, each of which takes time tau.  Tasks are

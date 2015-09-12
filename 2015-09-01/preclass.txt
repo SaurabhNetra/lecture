@@ -11,12 +11,18 @@ with questions for class!
     you computed this, and give URLs for where you got the parameters
     in your calculation.  (We will return to this question again after
     we cover some computer architecture.)
+
+- 8 DP SIMD Lane * 2 FMA * 1.053 GHz * 60 cores * 15 Xeon Phi accelerator boards = 15.1 TFLOP/sec
     
 2.  What is the approximate theoretical peak flop rate for your own machine?
+
+- 8 DP SIMD Lane * 2 FMA * 3.1 GHz * 2 cores = 99.2 GFLOP/sec
 
 3.  Suppose there are t tasks that can be executed in a pipeline
     with p stages.  What is the speedup over serial execution of the
     same tasks?
+
+- Speedup = time taken for serial execution / pipelined execution time = t*p / (p + (t-1))
 
 4.  Consider the following list of tasks (assume they can't be pipelined):
 
@@ -31,6 +37,9 @@ with questions for class!
     a compiled application?  What is the minimum parallel time given
     an arbitrary number of processors?
 
+- Serial time to compile application = sum of all times = 2.75 hr
+- Parallel time = 1hr GCC + max(0.5 hr OpenMPI, 0.25 hr OpenBLAS + 0.5 hr LAPACK = 0.75 hr parallel execution) + 0.5 hr Application = 1 + 0.75 + 0.5 = 2.25 hr 
+
 5.  Clone the membench repository from GitHub:
 
        git clone git@github.com:cornell-cs5220-f15/membench.git
@@ -42,6 +51,10 @@ with questions for class!
     in the leading comments of the Makefile).  Look at the output file
     timings-heat.pdf; what can you tell about the cache architecture
     on your machine from the plot?
+
+- For small size of cache, longer strides font’s matter since set associative caches accommodate almost all array elements.
+- For larger cache sizes, cache hits keep reducing with increase in strides and reaches a worst case around the middle where maximum thrashing occurs when stride length causes memory load requests successively from addresses mapped to the same cache block.
+- With further increase in stride length the successive memory loads are called from different cache blocks and thus this set associativity manages to reduce the thrashing.
 
 6.  From the cloned repository, check out the totient branch:
 
