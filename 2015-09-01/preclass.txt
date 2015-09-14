@@ -12,7 +12,12 @@ with questions for class!
     in your calculation.  (We will return to this question again after
     we cover some computer architecture.)
 
-- 8 DP SIMD Lane * 2 FMA * 1.053 GHz * 60 cores * 15 Xeon Phi accelerator boards = 15.1 TFLOP/sec
+ - 8 DP SIMD Lane * 2 FMA * 1.053 GHz * 60 cores * 15 Xeon Phi accelerator boards = 15.1 TFLOP/sec
+- For E-2620:
+4 FMA/cycle * 2 flops/FMA * 6 cores * 2.4 GHz clock * (8 nodes * 12 xeons in cluster) = 11.06 Teraflops/sec.
+
+Therefore,
+Total peak flop rate for the cluster = 15.1 Tflops/sec + 11.06 Tflops/sec = 26.16 Tflops/sec
     
 2.  What is the approximate theoretical peak flop rate for your own machine?
 
@@ -52,9 +57,10 @@ with questions for class!
     timings-heat.pdf; what can you tell about the cache architecture
     on your machine from the plot?
 
-- For small size of cache, longer strides font’s matter since set associative caches accommodate almost all array elements.
-- For larger cache sizes, cache hits keep reducing with increase in strides and reaches a worst case around the middle where maximum thrashing occurs when stride length causes memory load requests successively from addresses mapped to the same cache block.
+- For small size of array, longer strides dont’s matter since set associative caches accommodate almost all array elements.
+- For larger array sizes, cache hits keep reducing with increase in strides and reaches a worst case around the middle where maximum thrashing occurs when stride length causes memory load requests successively from addresses mapped to the same cache block.
 - With further increase in stride length the successive memory loads are called from different cache blocks and thus this set associativity manages to reduce the thrashing.
+- On my Macbook, observing from the heat map, worst performance occurs at a size of 32Mb with stride of 16Kb
 
 6.  From the cloned repository, check out the totient branch:
 
@@ -64,6 +70,9 @@ with questions for class!
     If you prefer, you can also look at the files on GitHub.  Either
     way, repeat the exercise of problem 5.  What can you tell about
     the cache architecture of the totient nodes?
+
+- On the totient cluster, from size of around 1Mb, as the stride increases from 4Kb to around 32Kb, L1 cache misses start to occur.
+- As size further increases to 32Mb, L2 misses occur, performance degrades and reaches its worst at around stride length of 1Mb and improves with further increase in stride length when subsequent memory reads being to map to different addresses in cache once again.
 
 7.  Implement the following three methods of computing the centroid
     of a million two-dimensional coordinates (double precision).
@@ -82,3 +91,30 @@ with questions for class!
     compiler.  To do this, run "module load cs5220" and run (e.g.)
 
         icc -o centroid centroid.c
+
+- On my Macbook pro, using gcc-5 the results were as follows:
+Result: 1.07382e+09 1.07378e+09
+Version 1: 5.426903e-02 (0.737069 GFLop/s)
+Result: 1.07382e+09 1.07378e+09
+Version 2: 1.085975e-01 (0.368333 GFLop/s)
+Result: 1.07383e+09 1.07378e+09
+Version 3: 1.074798e-01 (0.372163 GFLop/s)
+
+-On the totient cluster, using gcc, the results were as follows:
+Result: 1.07382e+09 1.07378e+09
+Version 1: 7.970383e-02 (0.501858 GFLop/s)
+Result: 1.07382e+09 1.07378e+09
+Version 2: 1.620265e-01 (0.246873 GFLop/s)
+Result: 1.07383e+09 1.07378e+09
+Version 3: 1.481528e-01 (0.269992 GFLop/s)
+
+-On the totient cluster, using icc, the results were as follows:
+Result: 1.07382e+09 1.07378e+09
+Version 1: 7.846949e-02 (0.509752 GFLop/s)
+Result: 1.07382e+09 1.07378e+09
+Version 2: 1.672213e-01 (0.239204 GFLop/s)
+Result: 1.07383e+09 1.07378e+09
+Version 3: 1.446554e-01 (0.276519 GFLop/s)
+
+
+

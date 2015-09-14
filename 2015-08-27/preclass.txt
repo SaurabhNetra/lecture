@@ -9,6 +9,7 @@
     fraction and the maximum number of cores as parameters.
 
     - The plot shows that with increase in the number of cores, the parallel efficiency initially increases steeply unto a certain threshold, and subsequently the rising curve flattens, and a further increase in cores do not affect the efficiency.
+- Till around 30 cores, the efficiency increases steeply, and the steepness gradually smoothens until the curve becomes flat at around 60 cores.
 
 2.  Suppose a particular program can be partitioned into perfectly
     independent tasks, each of which takes time tau.  Tasks are
@@ -16,9 +17,12 @@
     central server; this takes an overhead time alpha per task.
     What is the theoretically achievable throughput (tasks/time)?
 
+- Time taken for ‘p’ tasks = (alpha * p + tau)
+- Throughput = tasks/time = p/(alpha * p + tau)
+
 3.  Under what circumstances is it best to not tune?
 
-    - When the time investment in tuning is not commensurate with the speed up achieved after tuning, viz. spending time optimizing a code section which is not very parallel friendly.
+    - When the time investment in tuning is not commensurate with the speed up achieved after tuning, viz. spending time optimizing a code section which is not very parallel friendly or is not embarrassingly parallel.
 
 4.  The class cluster consists of eight nodes and fifteen Xeon Phi
     accelerator boards.  Based on an online search for information on
@@ -29,6 +33,11 @@
     we cover some computer architecture.)
 
     - 8 DP SIMD Lane * 2 FMA * 1.053 GHz * 60 cores * 15 Xeon Phi accelerator boards = 15.1 TFLOP/sec
+- For E-2620:
+4 FMA/cycle * 2 flops/FMA * 6 cores * 2.4 GHz clock * (8 nodes * 12 xeons in cluster) = 11.06 Teraflops/sec.
+
+Therefore,
+Total peak flop rate for the cluster = 15.1 Tflops/sec + 11.06 Tflops/sec = 26.16 Tflops/sec
     
 5.  What is the approximate theoretical peak flop rate for your own machine?
 

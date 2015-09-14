@@ -21,30 +21,39 @@ something into an already-full cache.
 1. Suppose 16N is significantly larger than the size of our L3 cache. What is
 the memory-based AI of this code? (Hint: What is the memory-based AI of just the
 innermost loop?)
+-  2*n flops (addition + multiplication) / 2*n memory reads = 1
 
 
 2. Now suppose that the cache is substantially larger than 16N, but
 substantially smaller than 8N^2. What is the AI now?
+- The row of A fits in cache, while column of B needs to be fetched every time
+i.e. 2*n flops / n memory reads = 2
 
 
 3. Now suppose the cache is large enough to hold all of A, B, and C. What is the
 AI now? (Hint: Writing to a byte of memory not already in the cache incurs two
 memory transfers: one to move the data to the cache for writing, and one to move
 the written data back to main memory.)
+- 2*n^3 flops / 2*n^2 reads = n
 
 
 4. Cache overflowing. On my CPU (Intel i7-4700 HQ), L1, L2, and L3 caches are 32
 KB, 256 KB, and 6 MB respectively. What is the largest problem size N that will
 fit in each cache? What is the arithmetic intensity associated with each problem
 size?
-
+- L1 Cache = 32 KB = 2^15 bytes. We have, 8*2*N^2 <= 2^15 for 2 N*N matrices to fit in cache. Therefore, largest N = floor(sqrt(2^11)) = 45
+- L2 Cache = 256 KB = 2^15 bytes. We have, 8*2*N^2 <= 2^18 for 2 N*N matrices to fit in cache. Therefore, largest N = 128
+- L3 Cache = 6 MB = 2^15 bytes. We have, 8*2*N^2 <= 2^18 for 2 N*N matrices to fit in cache. Therefore, largest N = 627
 
 5. My CPU has 4 cores, each of which can do 8 fused multiply-adds per cycle, has
 a clock rate of 2.4 GHz, and a memory bandwidth of 25.6 GB/s. At what arithmetic
 intensity does my machine become CPU-bound?
-
+- Arithmetic Intensity = (4 cores * 8*2(add+multiply) flops per cycle * 2.4 Giga cycles per sec ) / 25.6 Giga bytes per sec = 6 flops/byte
 
 6. So, for what size range for N will naive matmul be CPU-bound on my machine?
 
 
 7. So, what will a plot of Flops/sec vs N look like?
+- Initially till the largest value of N for which entire matrices fit in cache is reached, flops/sec = N, i.e graph will be that of y = x.
+- Above the largest N to fit in cache threshold, cache misses begin to occur and arithmetic intensity will drastically start dropping till it reaches 2 where one row fits in cache and the other needs to be fetched for every dot product.
+- Further more as the N increases such that no row or column fits in cache, and arithmetic intensity will drop to one and remain constant thereafter.  
