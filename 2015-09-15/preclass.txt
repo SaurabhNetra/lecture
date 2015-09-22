@@ -5,8 +5,11 @@ the glider pattern for a few generations.
 
 0.  How much time did you spend on this pre-class exercise, and when?
 
+around 30 mins on 21st September 2015
+
 1.  What are one or two points that you found least clear in the
     9/15 slide decks (including the narration)?
+- Coarse Blocking and ways of programming communication between blocks.
 
 2.  In the basic implementation provided, what size board for the Game
     of Life would fit in L3 cache for one of the totient nodes?  Add a
@@ -20,6 +23,8 @@ the glider pattern for a few generations.
     not dilute, so that we must still consider every cell.  You may
     want to try your hand at implementing your strategy (though you
     need not spend too much time on it).
+
+- Divide the n * n board into Four (n/4 + g) * (n/4 + 1=g), where the additional g rows and columns are respectively the ghost cells required for computation of the subsequent g generations respectively
 
 4.  Comment on what would be required to parallelize this code
     according to the domain decomposition strategy outlined in the
@@ -49,3 +54,6 @@ the glider pattern for a few generations.
     Based on what you know about memories and parallel architecture,
     do you see any features of this approach that are likely to lead
     to poor performance?
+- Since the first p particles needs to be compared with every other particle, there is scope for blocking and parallelism.
+- The particle array needs to be divided into smaller blocks that can fit into cache.
+- Assuming the particles in range part_idx[p] to part_idx[p+1] fit into cache, they could be duplicated for every other particle array block, and then the apply_forces could be done on a block level basis in parallel to obtain comparable to p times speedup in execution sacrificing p * block size times extra memory. 

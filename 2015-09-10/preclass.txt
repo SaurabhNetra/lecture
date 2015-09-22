@@ -2,13 +2,22 @@
    draw a roofline diagram for one totient node (assuming only the
    host cores are used, for the moment).  How do things change with
    the addition of the two Phi boards?
+- Read the Roofline Paper, Observed the roofline for Xeon
+- Xeon has a ridge point at 6.7 Operational Intensity.
+- After adding two phi boards, the peak performance capabilities should increase, but the ridge point is expected to shift to the right, requiring larger operational intensity to acquire peak.
 
 2. What is the difference between two cores and one core with
    hyperthreading?
 
+-Hyperthreading: 2 virtual Cores on 1 physical core, Processing times shorter, programs open faster, responsiveness more during multitasking.
+-Multicore: 2 physical cores, Dual core is more powerful than virtual cores, but a combination of multicore and hyper threading quadruples the processing efficiency.
+
 3. Do a Google search to find a picture of how memories are arranged
    on the Phi architecture.  Describe the setup briefly in your own
    words.  Is the memory access uniform or non-uniform?
+- Phi architecture evolves from the Von Neumann architecture.
+- Features of Phi/Distinctions from traditional Von Neumann: Cache Subsystem with every core, Noncore components consume more power, Memory controller to communicate with Main Memory, Cache coherence problem is introduced since each core has separate cache, 2 independent pipelines U and V, fewer stages in pipelines than Pentium 4, 4 hardware threads sharing same core(i.e 4 virtual cores sharing a cache subsystem), interconnect topology with bi-directional ring bus connecting the 4 cores and memory controller.
+-Addresses are evenly distributed across memory controllers, hence provides UNIFORM ACCESS Pattern
 
 4. Consider the parallel dot product implementations suggested in the
    slides.  As a function of the number of processors, the size of the
@@ -17,3 +26,6 @@
    [Note that dot products have low arithmetic intensity -- the
     roofline model may be useful for reasoning about the peak
     performance for computing pieces of the dot product]
+- I guess the dot product being a low arithmetic intensity operation, the peak performance is memory-bound.i.e. the number of memory fetches required to fetch an entire input vector /parts of input vectors into cache. Assume a fraction alpha of the input vector can be fetched at once into cache.
+- Also the operation can be highly vectorized using FMAs.
+Assuming size of vectors n, p processors with 8 wide FMAs giving 8 DP FLOPs/cycle(Xeon Phi) = 8*p*alpha vectorized peak FMA operations per cycle if the load is balanced
