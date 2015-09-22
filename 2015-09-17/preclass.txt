@@ -6,13 +6,18 @@ that you can figure out the numerical jargon.
 
 0.  How much time did you spend on this pre-class exercise, and when?
 
+- Around 1 and a 1/2 hour, on 21st September 2015, at 8:30 pm
+
 1.  What are one or two points that you found least clear in the
     9/17 slide decks (including the narration)?
+- Parabolic Differential Equations and how the oscillations occur when spatial time steps increase
 
 2.  Fill in the most straightforward implementation you can think of
     for multiplying a compressed sparse row matrix by a vector.
     Note: It is fine to look up the answer elsewhere!  If you do,
     please just say where you looked.
+
+- I figured it out using the lecture slides
 
       typedef struct csr_t {
           int  n;   /* Dimension of matrix (assume square) */
@@ -24,21 +29,45 @@ that you can figure out the numerical jargon.
     
       void sparse_multiply(csr_t* A, double* x, double* result)
       {
-          /* Fill in here */
+	memset(result, 0, A->n * sizeof(double));
+          int i,j;
+    for(i = 0;i < A->n;i++) {
+        for(j =A->ptr[i];j < A->ptr[i+1];j++) {
+            result[i] += A->pr[j]*x[A->col[j]];
+        }
+    }
       } 
+
+- My Output
+dhcp-rhodes-1194:2015-09-17 Saurabh$ gcc csr_product.c 
+dhcp-rhodes-1194:2015-09-17 Saurabh$ ./a.out
+ -2
+ -5
+ -4
+ 12
+
 
 3.  From the slides, complete the following short code:
 
       double laplacian_u(double (*u)(double x, double y),
                          double h, double x, double y)
       {
-          /* Estimate the Laplacian applied to u at (x,y) */
+          return pow(h,-2)*(4*u(x,y)-u(x-1,y)-u(x+1,y)-u(x,y-1)-u(x,y+1));
       }
 
     If you are unfamiliar with the syntax, the first argument to
     laplacian_u is a C function pointer -- within the function,
     it can be called in the same way as an ordinary function (i.e.
     u(x,y)).  See the laplace2d.c code in this directory as an example.
+
+- My Output
+dhcp-rhodes-1194:2015-09-17 Saurabh$ gcc laplace2d.c
+dhcp-rhodes-1194:2015-09-17 Saurabh$ ls
+Makefile	a.out		csr_product.c	laplace2d.c	preclass.txt
+dhcp-rhodes-1194:2015-09-17 Saurabh$ ./a.out
+Numerical Laplacian at (0.8,0.5) = 614191
+True Laplacian at (0.8,0.5) = 0.668038
+dhcp-rhodes-1194:2015-09-17 Saurabh$ 
 
 4.  In one space dimension, the following numerical scheme
     approximately solves the wave equation
