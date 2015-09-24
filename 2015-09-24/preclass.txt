@@ -2,6 +2,7 @@
 
 1.  What are one or two points that you found least clear in the
     9/24 slide decks (including the narration)?
+- How do we make sure that False Sharing through variables on same cache lines doesn’t occur. Do we write code differently for different platforms and architectures?
 
 2.  The omp_mc.c file in the demo subdirectory runs a Monte Carlo
     simulation to estimate the expected value of a uniform random
@@ -12,6 +13,7 @@
        terms of the number of trials (N), number of processors (p),
        time per trial (t_trial), and time to update the global
        counters in the critical section (t_update).
+- (N/p)*t_trial + t_update*p*N/B
 
     b) Run the code with a few different parameter values in order
        to estimate N, t_trial, and t_update for this code on

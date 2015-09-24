@@ -12,6 +12,7 @@
        terms of the number of trials (N), number of processors (p),
        time per trial (t_trial), and time to update the global
        counters in the critical section (t_update).
+- (N/p)*t_trial + t_update*p*N/B
 
     b) Run the code with a few different parameter values in order
        to estimate N, t_trial, and t_update for this code on
