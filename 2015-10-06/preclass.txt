@@ -20,6 +20,8 @@
        OpenMPI, and re-run the on-node tests using OpenMPI (note:
        you will have to add a module load to the start of the PBS
        scripts).  How do the timings differ from the Intel MPI timings?
+- ping-2chip: ompi is faster than intel mph till size of 5001, after which intel mph becomes faster
+- ping-2core: intel mph starts of slightly faster than oomph, for small sizes, and dominates ompi by becoming twice as better for size of 16001
 
     c) When running at the peak rate (e.g. 16 double precision
        flops/cycle), how many (double precision) floating point ops
